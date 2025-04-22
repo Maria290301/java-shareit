@@ -23,7 +23,7 @@ public class ItemRequestMapper {
         return dto;
     }
 
-    public ItemRequest toRequest(ItemRequestDto dto) {
+    public ItemRequest toEntity(ItemRequestDto dto) {
         ItemRequest request = new ItemRequest();
         request.setDescription(dto.getDescription());
         request.setRequestor(userMapper.toEntity(dto.getRequestor()));

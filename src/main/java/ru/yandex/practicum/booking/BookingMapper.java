@@ -28,7 +28,7 @@ public class BookingMapper {
         return dto;
     }
 
-    public Booking toBooking(BookingDto dto) {
+    public Booking toEntity(BookingDto dto) {
         Booking booking = new Booking();
         booking.setId(dto.getId());
         booking.setStartDate(dto.getStartDate());

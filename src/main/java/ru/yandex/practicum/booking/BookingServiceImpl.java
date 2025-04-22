@@ -49,7 +49,7 @@ public class BookingServiceImpl implements BookingService {
             throw new IllegalStateException("Предмет недоступен для бронирования");
         }
 
-        Booking booking = bookingMapper.toBooking(bookingDto);
+        Booking booking = bookingMapper.toEntity(bookingDto);
         booking.setBooker(user);
         booking.setItem(item);
         booking.setStatus(BookingStatus.WAITING);
