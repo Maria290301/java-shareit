@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ru.yandex.practicum</groupId>
-    <artifactId>ShareIt</artifactId>
+    <artifactId>Filmorate</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.23.1</version>
+            <version>3.23.1</version> <!-- Проверьте последнюю версию -->
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -75,6 +75,7 @@
             <version>2.1.210</version>
             <scope>runtime</scope>
         </dependency>
+
     </dependencies>
 
     <profiles>
@@ -83,24 +84,19 @@
             <build>
                 <plugins>
                     <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>3.10.1</version>
+                        <configuration>
+                            <source>21</source>
+                            <target>21</target>
+                            <release>21</release>
+                        </configuration>
+                    </plugin>
+                    <plugin>
                         <groupId>org.springframework.boot</groupId>
                         <artifactId>spring-boot-maven-plugin</artifactId>
                         <version>${spring.boot.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>repackage</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>${maven.compiler.source}</source>
-                            <target>${maven.compiler.target}</target>
-                        </configuration>
                     </plugin>
                 </plugins>
             </build>
