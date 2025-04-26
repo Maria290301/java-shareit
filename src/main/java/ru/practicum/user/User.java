@@ -1,4 +1,4 @@
-package ru.yandex.practicum.user;
+package ru.practicum.user;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -7,7 +7,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-@Entity
 @Table(name = "users")
 public class User {
     @Id

@@ -1,14 +1,13 @@
-package ru.yandex.practicum.item;
+package ru.practicum.item;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
-import ru.yandex.practicum.request.ItemRequest;
-import ru.yandex.practicum.user.User;
+import ru.practicum.request.ItemRequest;
+import ru.practicum.user.User;
 
 @Data
-@Entity
 @Table(name = "items")
 public class Item {
     @Id

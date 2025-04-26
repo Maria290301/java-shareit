@@ -1,28 +1,24 @@
-package ru.yandex.practicum.booking;
+package ru.practicum.booking;
 
-import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/bookings")
 public class BookingController {
     private final BookingService bookingService;
 
-    @Autowired
-    public BookingController(BookingService bookingService) {
-        this.bookingService = bookingService;
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookingDto createBooking(@Valid @RequestBody BookingDto bookingDto,
+    public BookingDto createBooking(@RequestBody BookingDto bookingDto,
                                     @RequestHeader("X-User-Id") Long userId) {
         log.info("Получен запрос на создание бронирования от пользователя {}", userId);
         return bookingService.createBooking(bookingDto, userId);
@@ -62,7 +58,7 @@ public class BookingController {
 
     @GetMapping("/check-availability")
     public boolean checkDateOverlap(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-                                    @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime  end,
+                                    @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
                                     @RequestParam("itemId") Long itemId) {
         log.info("Проверка доступности предмета {} в период с {} по {}", itemId, start, end);
         return bookingService.checkDateOverlap(start, end, itemId);

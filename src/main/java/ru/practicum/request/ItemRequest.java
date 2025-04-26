@@ -1,4 +1,4 @@
-package ru.yandex.practicum.request;
+package ru.practicum.request;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -6,12 +6,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
-import ru.yandex.practicum.user.User;
+import ru.practicum.user.User;
 
 import java.time.LocalDateTime;
 
 @Data
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "item_requests")
