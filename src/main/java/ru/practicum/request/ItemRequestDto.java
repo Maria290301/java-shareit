@@ -1,7 +1,7 @@
-package ru.yandex.practicum.request;
+package ru.practicum.request;
 
 import lombok.Data;
-import ru.yandex.practicum.user.UserDto;
+import ru.practicum.user.UserDto;
 
 import java.time.LocalDateTime;
 

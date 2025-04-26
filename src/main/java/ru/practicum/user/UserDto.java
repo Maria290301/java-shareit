@@ -1,4 +1,4 @@
-package ru.yandex.practicum.user;
+package ru.practicum.user;
 
 import jakarta.validation.constraints.Email;
 import lombok.Data;
@@ -7,7 +7,6 @@ import lombok.Data;
 public class UserDto {
     private Long id;
     private String name;
-
     @Email
     private String email;
     private String password;

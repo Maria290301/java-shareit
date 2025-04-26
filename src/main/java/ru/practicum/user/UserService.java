@@ -1,4 +1,4 @@
-package ru.yandex.practicum.user;
+package ru.practicum.user;
 
 import org.springframework.stereotype.Service;
 
@@ -16,4 +16,3 @@ public interface UserService {
 
     UserDto getUserById(Long id);
 }
-

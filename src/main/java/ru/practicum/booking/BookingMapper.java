@@ -1,10 +1,9 @@
-package ru.yandex.practicum.booking;
+package ru.practicum.booking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.item.ItemMapper;
-import ru.yandex.practicum.user.UserMapper;
-
+import ru.practicum.item.ItemMapper;
+import ru.practicum.user.UserMapper;
 
 @Component
 public class BookingMapper {

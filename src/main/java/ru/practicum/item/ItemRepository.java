@@ -1,9 +1,9 @@
-package ru.yandex.practicum.item;
+package ru.practicum.item;
 
 import io.micrometer.common.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.exception.NotFoundException;
+import ru.practicum.exception.NotFoundException;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;

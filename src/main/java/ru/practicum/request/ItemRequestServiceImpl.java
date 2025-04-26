@@ -1,10 +1,10 @@
-package ru.yandex.practicum.request;
+package ru.practicum.request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.exception.NotFoundException;
-import ru.yandex.practicum.user.User;
-import ru.yandex.practicum.user.UserRepository;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.user.User;
+import ru.practicum.user.UserRepository;
 
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,8 +1,8 @@
-package ru.yandex.practicum.request;
+package ru.practicum.request;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.user.UserMapper;
+import ru.practicum.user.UserMapper;
 
 @Component
 public class ItemRequestMapper {

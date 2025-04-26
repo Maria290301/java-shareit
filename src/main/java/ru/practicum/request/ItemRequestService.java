@@ -1,4 +1,4 @@
-package ru.yandex.practicum.request;
+package ru.practicum.request;
 
 import java.util.List;
 
@@ -15,4 +15,3 @@ public interface ItemRequestService {
 
     void deleteRequest(Long requestId);
 }
-

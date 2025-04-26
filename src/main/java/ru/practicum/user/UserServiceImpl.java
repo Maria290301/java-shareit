@@ -1,8 +1,8 @@
-package ru.yandex.practicum.user;
+package ru.practicum.user;
 
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.exception.ConflictException;
-import ru.yandex.practicum.exception.NotFoundException;
+import ru.practicum.exception.ConflictException;
+import ru.practicum.exception.NotFoundException;
 
 import java.util.List;
 import java.util.Objects;

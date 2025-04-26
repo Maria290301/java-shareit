@@ -1,13 +1,16 @@
-package ru.yandex.practicum.item;
+package ru.practicum.item;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-import ru.yandex.practicum.user.User;
-import ru.yandex.practicum.user.UserRepository;
+import ru.practicum.user.User;
+import ru.practicum.user.UserRepository;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -16,6 +19,7 @@ public class ItemServiceImpl implements ItemService {
     private final ItemRepository itemRepository;
     private final UserRepository userRepository;
     private final ItemMapper itemMapper;
+    private final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
 
     public ItemServiceImpl(ItemRepository itemRepository,
                            UserRepository userRepository,

@@ -1,10 +1,14 @@
-package ru.yandex.practicum.booking;
+package ru.practicum.booking;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.exception.NotFoundException;
-import ru.yandex.practicum.item.*;
-import ru.yandex.practicum.user.*;
+import ru.practicum.exception.NotFoundException;
+import ru.practicum.item.Item;
+import ru.practicum.item.ItemRepository;
+import ru.practicum.user.User;
+import ru.practicum.user.UserDto;
+import ru.practicum.user.UserMapper;
+import ru.practicum.user.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;

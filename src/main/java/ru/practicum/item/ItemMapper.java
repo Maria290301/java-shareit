@@ -1,4 +1,4 @@
-package ru.yandex.practicum.item;
+package ru.practicum.item;
 
 import org.springframework.stereotype.Component;
 

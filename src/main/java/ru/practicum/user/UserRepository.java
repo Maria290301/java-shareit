@@ -1,7 +1,7 @@
-package ru.yandex.practicum.user;
+package ru.practicum.user;
 
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.exception.NotFoundException;
+import ru.practicum.exception.NotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashMap;

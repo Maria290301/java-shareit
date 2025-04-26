@@ -1,7 +1,7 @@
-package ru.yandex.practicum.request;
+package ru.practicum.request;
 
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.user.User;
+import ru.practicum.user.User;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,4 +48,3 @@ public class ItemRequestRepository {
                 .toList();
     }
 }
-

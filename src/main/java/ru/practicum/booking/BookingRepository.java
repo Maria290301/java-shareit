@@ -1,6 +1,7 @@
-package ru.yandex.practicum.booking;
+package ru.practicum.booking;
 
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

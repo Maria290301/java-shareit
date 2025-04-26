@@ -1,4 +1,4 @@
-package ru.yandex.practicum.booking;
+package ru.practicum.booking;
 
 import java.time.LocalDateTime;
 import java.util.List;
