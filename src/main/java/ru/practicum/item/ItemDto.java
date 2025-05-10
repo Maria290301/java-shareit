@@ -1,23 +1,29 @@
 package ru.practicum.item;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
-import org.springframework.validation.annotation.Validated;
+import lombok.*;
 
-@Data
-@Validated
+@Getter
+@Setter
 public class ItemDto {
+
     private Long id;
-
-    @NotNull
-    @Size(min = 2, max = 100)
+    @NotBlank
     private String name;
-
-    @NotNull
-    @Size(min = 10, max = 1000)
+    @NotBlank
     private String description;
-
     @NotNull
     private Boolean available;
+    private Long ownerId;
+    private Long requestId;
+
+    public ItemDto(Long id, String name, String description, Boolean available, Long ownerId, Long requestId) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.ownerId = ownerId;
+        this.requestId = requestId;
+    }
 }

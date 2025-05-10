@@ -1,18 +1,16 @@
 package ru.practicum.user;
 
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
 public interface UserService {
-    UserDto createUser(UserDto userDto);
 
-    UserDto updateUser(Long id, UserDto userDto);
+    UserDto addUser(UserDto userDto);
 
-    void deleteUser(Long id);
+    UserDto updateUser(UserDto userDto, Long userId);
+
+    void deleteUser(Long userId);
 
     List<UserDto> getAllUsers();
 
-    UserDto getUserById(Long id);
+    UserDto getUserById(Long userId);
 }

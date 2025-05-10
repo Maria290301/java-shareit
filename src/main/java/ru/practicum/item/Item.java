@@ -1,34 +1,36 @@
 package ru.practicum.item;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.practicum.request.ItemRequest;
 import ru.practicum.user.User;
 
-@Data
+@Entity
 @Table(name = "items")
+@Getter
+@Setter
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    @Size(min = 2, max = 100)
+    @Column(name = "name", nullable = false)
     private String name;
-
-    @NotNull
-    @Size(min = 10, max = 1000)
+    @Column(name = "description", nullable = false)
     private String description;
-
-    private boolean available = true;
-
-    @ManyToOne
-    @JoinColumn(name = "owner")
+    private boolean available;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner_id", nullable = false)
     private User owner;
-
-    @OneToOne
-    @JoinColumn(name = "request")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "request_id")
     private ItemRequest request;
+
+    public Item(Long id, String name, String description, boolean available, User owner) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.available = available;
+        this.owner = owner;
+    }
 }

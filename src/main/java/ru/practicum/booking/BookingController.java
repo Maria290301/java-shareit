@@ -1,66 +1,47 @@
 package ru.practicum.booking;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/bookings")
 public class BookingController {
+
     private final BookingService bookingService;
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public BookingDto createBooking(@RequestBody BookingDto bookingDto,
-                                    @RequestHeader("X-User-Id") Long userId) {
-        log.info("Получен запрос на создание бронирования от пользователя {}", userId);
-        return bookingService.createBooking(bookingDto, userId);
+    public ResponseBookingDto addBooking(@RequestBody @Valid BookingDto bookingDto, @RequestHeader("X-Sharer-User-Id") Long bookerId) {
+        log.info("Получен запрос POST /bookings");
+        return bookingService.addBooking(bookingDto, bookerId);
+    }
+
+    @PatchMapping("/{bookingId}")
+    public ResponseBookingDto updateBooking(@RequestHeader("X-Sharer-User-Id") Long ownerId, @PathVariable Long bookingId, @RequestParam(name = "approved") boolean isApproved) {
+        log.info("Получен запрос PATCH /bookings/{bookingId}");
+        return bookingService.patchBooking(ownerId, bookingId, isApproved);
     }
 
     @GetMapping("/{bookingId}")
-    public BookingDto getBookingById(@PathVariable("bookingId") Long bookingId) {
-        log.info("Получен запрос на получение бронирования с ID {}", bookingId);
-        return bookingService.getBookingById(bookingId);
+    public ResponseBookingDto getBookingById(@RequestHeader("X-Sharer-User-Id") Long requesterId, @PathVariable Long bookingId) {
+        log.info("Получен запрос GET /bookings/{bookingId}");
+        return bookingService.getBookingById(requesterId, bookingId);
     }
 
-    @GetMapping("/user/{userId}")
-    public List<BookingDto> getUserBookings(@PathVariable("userId") Long userId) {
-        log.info("Получен запрос на получение бронирований пользователя {}", userId);
-        return bookingService.getUserBookings(userId);
+    @GetMapping
+    public List<ResponseBookingDto> getAllUsersBookings(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam(value = "state", defaultValue = "ALL", required = false) BookingState state) {
+        log.info("Получен запрос GET /bookings?state={state}");
+        return bookingService.getAllUsersBookings(userId, state);
     }
 
-    @GetMapping("/item/{itemId}")
-    public List<BookingDto> getItemBookings(@PathVariable("itemId") Long itemId) {
-        log.info("Получен запрос на получение бронирований предмета {}", itemId);
-        return bookingService.getItemBookings(itemId);
-    }
-
-    @PatchMapping("/{bookingId}/status")
-    public BookingDto updateBookingStatus(@PathVariable("bookingId") Long bookingId,
-                                          @RequestParam("status") BookingStatus newStatus) {
-        log.info("Получен запрос на обновление статуса бронирования {} до {}", bookingId, newStatus);
-        return bookingService.updateBookingStatus(bookingId, newStatus);
-    }
-
-    @DeleteMapping("/{bookingId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void cancelBooking(@PathVariable("bookingId") Long bookingId) {
-        log.info("Получен запрос на отмену бронирования {}", bookingId);
-        bookingService.cancelBooking(bookingId);
-    }
-
-    @GetMapping("/check-availability")
-    public boolean checkDateOverlap(@RequestParam("start") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
-                                    @RequestParam("end") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end,
-                                    @RequestParam("itemId") Long itemId) {
-        log.info("Проверка доступности предмета {} в период с {} по {}", itemId, start, end);
-        return bookingService.checkDateOverlap(start, end, itemId);
+    @GetMapping("/owner")
+    public List<ResponseBookingDto> getAllItemOwnerBookings(@RequestHeader("X-Sharer-User-Id") Long ownerId, @RequestParam(value = "state", defaultValue = "ALL", required = false) BookingState state) {
+        log.info("Получен запрос GET /bookings/owner?state={state}");
+        return bookingService.getAllItemOwnerBookings(ownerId, state);
     }
 }

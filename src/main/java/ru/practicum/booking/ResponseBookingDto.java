@@ -1,7 +1,12 @@
 package ru.practicum.booking;
 
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import ru.practicum.item.ItemDto;
+import ru.practicum.user.UserDto;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookingDto {
+public class ResponseBookingDto {
 
     private Long id;
     @NotNull
@@ -17,7 +22,7 @@ public class BookingDto {
     @NotNull
     private LocalDateTime end;
     @NotNull
-    private Long itemId;
-    private Long bookerId;
+    private ItemDto item;
+    private UserDto booker;
     private BookingStatus status;
 }

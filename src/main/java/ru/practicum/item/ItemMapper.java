@@ -1,25 +1,40 @@
 package ru.practicum.item;
 
 import org.springframework.stereotype.Component;
+import ru.practicum.user.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class ItemMapper {
 
-    public ItemDto toItemDto(Item item) {
-        ItemDto dto = new ItemDto();
-        dto.setId(item.getId());
-        dto.setName(item.getName());
-        dto.setDescription(item.getDescription());
-        dto.setAvailable(item.isAvailable());
-        return dto;
+    public static ItemDto toItemDto(Item item) {
+        return new ItemDto(
+                item.getId(),
+                item.getName(),
+                item.getDescription(),
+                item.isAvailable(),
+                item.getOwner().getId(),
+                item.getRequest() != null ? item.getRequest().getId() : null
+        );
     }
 
-    public Item toEntity(ItemDto dto) {
-        Item item = new Item();
-        item.setId(dto.getId());
-        item.setName(dto.getName());
-        item.setDescription(dto.getDescription());
-        item.setAvailable(dto.getAvailable());
-        return item;
+    public static Item toItem(ItemDto itemDto, User user) {
+        return new Item(
+                itemDto.getId(),
+                itemDto.getName(),
+                itemDto.getDescription(),
+                itemDto.getAvailable(),
+                user
+        );
+    }
+
+    public static List<ItemDto> listToItemDto(Iterable<Item> items) {
+        List<ItemDto> dtos = new ArrayList<>();
+        for (Item item : items) {
+            dtos.add(toItemDto(item));
+        }
+        return dtos;
     }
 }

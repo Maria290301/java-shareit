@@ -1,29 +1,28 @@
 package ru.practicum.user;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    @Size(min = 3, max = 50)
-    @Column(unique = true)
+    @Column(name = "name", nullable = false)
     private String name;
-
-    @NotNull
-    @Email
-    @Column(unique = true)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @NotNull
-    @Size(min = 8)
-    private String password;
+    public User() {
+
+    }
+
+    public User(Long id, String name, String email) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+    }
 }
