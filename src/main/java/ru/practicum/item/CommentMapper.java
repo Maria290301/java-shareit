@@ -1,13 +1,13 @@
 package ru.practicum.item;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.user.User;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@UtilityClass
 public class CommentMapper {
 
     public static CommentDto toCommentDto(Comment comment) {

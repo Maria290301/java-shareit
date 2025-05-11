@@ -1,12 +1,12 @@
 package ru.practicum.item;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@UtilityClass
 public class ItemMapper {
 
     public static ItemDto toItemDto(Item item) {

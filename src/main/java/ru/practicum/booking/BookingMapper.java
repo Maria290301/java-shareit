@@ -1,6 +1,6 @@
 package ru.practicum.booking;
 
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.item.Item;
 import ru.practicum.item.ItemMapper;
 import ru.practicum.user.User;
@@ -9,7 +9,7 @@ import ru.practicum.user.UserMapper;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@UtilityClass
 public class BookingMapper {
 
 
@@ -35,7 +35,7 @@ public class BookingMapper {
         );
     }
 
-    public static List<ResponseBookingDto> listToResponseBookingDto(Iterable<Booking> bookings) {
+    public static List<ResponseBookingDto> listToResponseBookingDto(List<Booking> bookings) {
         List<ResponseBookingDto> result = new ArrayList<>();
         for (Booking b : bookings) {
             result.add(toResponseBookingDto(b));

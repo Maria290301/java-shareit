@@ -1,13 +1,11 @@
 package ru.practicum.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import ru.practicum.user.UserDto;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
+@Data
 public class ItemRequestDto {
 
     private Long id;

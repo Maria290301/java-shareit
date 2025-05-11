@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class ItemRequestServiceImpl implements ItemRequestService {
 
     private final ItemRequestRepository itemRequestRepository;
@@ -25,7 +26,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional
     public ItemRequestDto createRequest(ItemRequestDto requestDto) {
         ItemRequest itemRequest = itemRequestMapper.toEntity(requestDto);
         itemRequest = itemRequestRepository.save(itemRequest);
@@ -33,7 +33,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public ItemRequestDto getRequestById(Long requestId) {
         ItemRequest itemRequest = itemRequestRepository.findById(requestId);
         if (itemRequest == null) {
@@ -43,7 +42,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<ItemRequestDto> getRequestsByUserId(Long userId) {
         User requestor = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
@@ -55,7 +53,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<ItemRequestDto> searchRequests(String text) {
         return itemRequestRepository.findByDescriptionContaining(text)
                 .stream()
@@ -64,7 +61,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional
     public ItemRequestDto updateRequest(Long requestId, ItemRequestDto updatedRequest) {
         ItemRequest existingRequest = itemRequestRepository.findById(requestId);
         if (existingRequest == null) {
@@ -77,7 +73,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
     }
 
     @Override
-    @Transactional
     public void deleteRequest(Long requestId) {
         ItemRequest existingRequest = itemRequestRepository.findById(requestId);
         if (existingRequest == null) {
