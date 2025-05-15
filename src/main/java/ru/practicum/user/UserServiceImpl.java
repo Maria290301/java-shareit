@@ -1,87 +1,63 @@
 package ru.practicum.user;
 
+import org.springframework.transaction.annotation.Transactional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.practicum.exception.ConflictException;
 import ru.practicum.exception.NotFoundException;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-    public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
+    @Override
+    public UserDto addUser(UserDto userDto) {
+        User user = UserMapper.toEntity(userDto);
+        return UserMapper.toUserDto(userRepository.save(user));
     }
 
     @Override
-    public UserDto createUser(UserDto userDto) {
-        validateUserUniqueness(userDto.getName(), userDto.getEmail());
+    public UserDto updateUser(UserDto userDto, Long userId) {
+        User existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
 
-        if (userDto.getEmail() == null || userDto.getEmail().isEmpty()) {
-            throw new IllegalArgumentException("Email не может быть пустым");
+        if (userDto.getName() != null) {
+            existingUser.setName(userDto.getName());
         }
 
-        if (userDto.getName() == null || userDto.getName().isEmpty()) {
-            userDto.setName(userDto.getEmail());
+        if (userDto.getEmail() != null) {
+            existingUser.setEmail(userDto.getEmail());
         }
 
-        User user = userMapper.toEntity(userDto);
-        User savedUser = userRepository.save(user);
-        return userMapper.toUserDto(savedUser);
+        return UserMapper.toUserDto(userRepository.save(existingUser));
     }
 
     @Override
-    public UserDto updateUser(Long id, UserDto userDto) {
-        User user = userRepository.findById(id);
-        if (user == null) {
-            throw new NotFoundException("Пользователь не найден");
+    public void deleteUser(Long userId) {
+        if (!userRepository.existsById(userId)) {
+            throw new NotFoundException("Пользователь с id=" + userId + " не найден");
         }
-
-        if (!Objects.equals(user.getName(), userDto.getName()) ||
-                !Objects.equals(user.getEmail(), userDto.getEmail())) {
-            validateUserUniqueness(userDto.getName(), userDto.getEmail());
-        }
-
-        user.setName(userDto.getName());
-        user.setEmail(userDto.getEmail());
-        User updatedUser = userRepository.save(user);
-        return userMapper.toUserDto(updatedUser);
+        userRepository.deleteById(userId);
     }
 
     @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(userMapper::toUserDto)
+        return userRepository.findAll().stream()
+                .map(UserMapper::toUserDto)
                 .collect(Collectors.toList());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDto getUserById(Long userId) {
-        User user = userRepository.findById(userId);
-        if (user == null) {
-            throw new NotFoundException("Пользователь не найден");
-        }
-        return userMapper.toUserDto(user);
-    }
-
-    private void validateUserUniqueness(String name, String email) {
-        if (userRepository.existsByName(name)) {
-            throw new ConflictException("Name уже используется");
-        }
-
-        if (userRepository.existsByEmail(email)) {
-            throw new ConflictException("Email уже используется");
-        }
+        return userRepository.findById(userId)
+                .map(UserMapper::toUserDto)
+                .orElseThrow(() -> new NotFoundException("Пользователь с id=" + userId + " не найден"));
     }
 }

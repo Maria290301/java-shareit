@@ -1,8 +1,8 @@
 package ru.practicum.request;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,14 +10,18 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequiredArgsConstructor
-@RequestMapping("/requests")
+@RequestMapping(path = "/requests")
 public class ItemRequestController {
     private final ItemRequestService itemRequestService;
 
+    @Autowired
+    public ItemRequestController(ItemRequestService itemRequestService) {
+        this.itemRequestService = itemRequestService;
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ItemRequestDto createRequest(@RequestBody ItemRequestDto itemRequestDto,
+    public ItemRequestDto createRequest(@Valid @RequestBody ItemRequestDto itemRequestDto,
                                         @RequestHeader("X-User-Id") Long userId) {
         log.info("Получен запрос на создание запроса на предмет от пользователя {}", userId);
         return itemRequestService.createRequest(itemRequestDto);

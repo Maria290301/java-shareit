@@ -1,20 +1,18 @@
 package ru.practicum.item;
 
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
-@Service
 public interface ItemService {
-    ItemDto createItem(ItemDto itemDto, Long ownerId);
 
-    ItemDto getItem(Long itemId);
+    ItemDto addItem(ItemDto itemDto, Long ownerId);
 
-    ItemDto updateItem(Long itemId, ItemDto itemDto, Long userId);
+    ItemDto updateItem(ItemDto itemDto, Long itemId, Long ownerId);
 
-    void deleteItem(Long itemId);
+    ItemDtoBookingsAndComments getItemById(Long ownerId, Long itemId);
 
-    List<ItemDto> getAllItemsByOwner(Long ownerId);
+    List<ItemDtoBookingsAndComments> getUserItems(Long ownerId);
 
-    List<ItemDto> searchItems(String text);
+    List<ItemDto> getSearch(String text);
+
+    CommentDto addComment(CommentDto commentDto, Long itemId, Long authorId);
 }

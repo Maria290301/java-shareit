@@ -1,6 +1,6 @@
 package ru.practicum.request;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import ru.practicum.exception.NotFoundException;
 import ru.practicum.user.User;
@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(readOnly = true)
 public class ItemRequestServiceImpl implements ItemRequestService {
+
     private final ItemRequestRepository itemRequestRepository;
     private final UserRepository userRepository;
     private final ItemRequestMapper itemRequestMapper;
 
-    @Autowired
     public ItemRequestServiceImpl(ItemRequestRepository itemRequestRepository,
                                   UserRepository userRepository,
                                   ItemRequestMapper itemRequestMapper) {
@@ -42,10 +43,9 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public List<ItemRequestDto> getRequestsByUserId(Long userId) {
-        User requestor = userRepository.findById(userId);
-        if (requestor == null) {
-            throw new NotFoundException("Пользователь не найден");
-        }
+        User requestor = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
         return itemRequestRepository.findByRequestor(requestor)
                 .stream()
                 .map(itemRequestMapper::toRequestDto)
@@ -78,6 +78,6 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         if (existingRequest == null) {
             throw new NotFoundException("Запрос не найден");
         }
-        itemRequestRepository.delete(requestId);
+        itemRequestRepository.deleteById(requestId);
     }
 }

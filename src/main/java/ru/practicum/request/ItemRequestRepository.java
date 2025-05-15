@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 @Repository
 public class ItemRequestRepository {
@@ -30,21 +31,21 @@ public class ItemRequestRepository {
         return requests.values();
     }
 
-    public void delete(Long id) {
+    public void deleteById(Long id) {
         requests.remove(id);
     }
 
     public List<ItemRequest> findByRequestor(User requestor) {
         return requests.values()
                 .stream()
-                .filter(r -> r.getRequestor().equals(requestor))
-                .toList();
+                .filter(r -> r.getRequester().equals(requestor))
+                .collect(Collectors.toList());
     }
 
     public List<ItemRequest> findByDescriptionContaining(String text) {
         return requests.values()
                 .stream()
                 .filter(r -> r.getDescription().contains(text))
-                .toList();
+                .collect(Collectors.toList());
     }
 }

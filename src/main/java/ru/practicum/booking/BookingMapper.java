@@ -1,40 +1,45 @@
 package ru.practicum.booking;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
+import ru.practicum.item.Item;
 import ru.practicum.item.ItemMapper;
+import ru.practicum.user.User;
 import ru.practicum.user.UserMapper;
 
-@Component
+import java.util.ArrayList;
+import java.util.List;
+
+@UtilityClass
 public class BookingMapper {
-    private final ItemMapper itemMapper;
-    private final UserMapper userMapper;
 
-    @Autowired
-    public BookingMapper(ItemMapper itemMapper, UserMapper userMapper) {
-        this.itemMapper = itemMapper;
-        this.userMapper = userMapper;
+
+    public static Booking toBooking(BookingDto dto, Item item, User booker) {
+        return new Booking(
+                dto.getId() != null ? dto.getId().longValue() : null,
+                dto.getStart(),
+                dto.getEnd(),
+                item,
+                booker,
+                BookingStatus.WAITING
+        );
     }
 
-    public BookingDto toBookingDto(Booking booking) {
-        BookingDto dto = new BookingDto();
-        dto.setId(booking.getId());
-        dto.setStartDate(booking.getStartDate());
-        dto.setEndDate(booking.getEndDate());
-        dto.setItem(itemMapper.toItemDto(booking.getItem()));
-        dto.setBooker(userMapper.toUserDto(booking.getBooker()));
-        dto.setStatus(booking.getStatus());
-        return dto;
+    public static ResponseBookingDto toResponseBookingDto(Booking booking) {
+        return new ResponseBookingDto(
+                booking.getId(),
+                booking.getStart(),
+                booking.getEnd(),
+                ItemMapper.toItemDto(booking.getItem()),
+                UserMapper.toUserDto(booking.getBooker()),
+                booking.getStatus()
+        );
     }
 
-    public Booking toEntity(BookingDto dto) {
-        Booking booking = new Booking();
-        booking.setId(dto.getId());
-        booking.setStartDate(dto.getStartDate());
-        booking.setEndDate(dto.getEndDate());
-        booking.setItem(itemMapper.toEntity(dto.getItem()));
-        booking.setBooker(userMapper.toEntity(dto.getBooker()));
-        booking.setStatus(dto.getStatus());
-        return booking;
+    public static List<ResponseBookingDto> listToResponseBookingDto(List<Booking> bookings) {
+        List<ResponseBookingDto> result = new ArrayList<>();
+        for (Booking b : bookings) {
+            result.add(toResponseBookingDto(b));
+        }
+        return result;
     }
 }
