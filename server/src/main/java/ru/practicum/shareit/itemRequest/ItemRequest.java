@@ -7,32 +7,22 @@ import ru.practicum.shareit.user.User;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "item_requests")
 @Getter
 @Setter
-@NoArgsConstructor
+@Entity
+@Table(name = "requests")
 @AllArgsConstructor
 public class ItemRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
+    @Column(name = "description", nullable = false)
     private String description;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "requester_id", nullable = false)
+    @JoinColumn(name = "requester_id")
     private User requester;
+    private LocalDateTime created;
 
-    @Column(nullable = false)
-    private LocalDateTime created = LocalDateTime.now();
-
-    // Конструктор без id и created (для создания)
-    public ItemRequest(String description, User requester) {
-        this.description = description;
-        this.requester = requester;
-        this.created = LocalDateTime.now();
+    public ItemRequest() {
     }
 }
-

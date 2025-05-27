@@ -1,17 +1,52 @@
 package ru.practicum.shareit.itemRequest;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+import ru.practicum.shareit.user.User;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
-public interface ItemRequestRepository extends JpaRepository<ItemRequest, Long> {
+@Repository
+public class ItemRequestRepository {
 
-    List<ItemRequest> findByRequesterIdOrderByCreatedDesc(Long requesterId);
+    private final Map<Long, ItemRequest> requests = new HashMap<>();
+    private final AtomicLong idCounter = new AtomicLong(0);
 
-    @Query("SELECT r FROM ItemRequest r WHERE r.requester.id <> :userId ORDER BY r.created DESC")
-    List<ItemRequest> findAllByOtherUsers(@Param("userId") Long userId, Pageable pageable);
+    public ItemRequest save(ItemRequest request) {
+        if (request.getId() == null) {
+            request.setId(idCounter.incrementAndGet());
+        }
+        requests.put(request.getId(), request);
+        return request;
+    }
+
+    public ItemRequest findById(Long id) {
+        return requests.get(id);
+    }
+
+    public Iterable<ItemRequest> findAll() {
+        return requests.values();
+    }
+
+    public void deleteById(Long id) {
+        requests.remove(id);
+    }
+
+    public List<ItemRequest> findByRequestor(User requestor) {
+        return requests.values()
+                .stream()
+                .filter(r -> r.getRequester().equals(requestor))
+                .collect(Collectors.toList());
+    }
+
+    public List<ItemRequest> findByDescriptionContaining(String text) {
+        return requests.values()
+                .stream()
+                .filter(r -> r.getDescription().contains(text))
+                .collect(Collectors.toList());
+    }
 }

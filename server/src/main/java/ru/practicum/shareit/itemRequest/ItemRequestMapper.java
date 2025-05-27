@@ -1,30 +1,37 @@
 package ru.practicum.shareit.itemRequest;
 
-import lombok.experimental.UtilityClass;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import ru.practicum.shareit.itemRequest.dto.ItemRequestDto;
-import ru.practicum.shareit.itemRequest.dto.ItemResponseDto;
-import ru.practicum.shareit.item.Item;
-import ru.practicum.shareit.user.User;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import ru.practicum.shareit.user.UserMapper;
 
-@UtilityClass
+
+@Component
 public class ItemRequestMapper {
 
-    public static ItemRequestDto toItemRequestDto(ItemRequest request, List<Item> items) {
-        List<ItemResponseDto> itemDtos = items.stream()
-                .map(i -> new ItemResponseDto(i.getId(), i.getName(), i.getOwner().getId()))
-                .collect(Collectors.toList());
-        return new ItemRequestDto(
-                request.getId(),
-                request.getDescription(),
-                request.getCreated(),
-                itemDtos
-        );
+    private final UserMapper userMapper;
+
+    @Autowired
+    public ItemRequestMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
     }
 
-    public static ItemRequest toItemRequest(ItemRequestDto dto, User user) {
-        return new ItemRequest(dto.getDescription(), user);
+    public ItemRequestDto toRequestDto(ItemRequest request) {
+        ItemRequestDto dto = new ItemRequestDto();
+        dto.setId(request.getId());
+        dto.setDescription(request.getDescription());
+        dto.setRequestor(userMapper.toUserDto(request.getRequester()));
+        dto.setCreated(request.getCreated());
+        return dto;
+    }
+
+    public ItemRequest toEntity(ItemRequestDto dto) {
+        ItemRequest request = new ItemRequest();
+        request.setDescription(dto.getDescription());
+        request.setRequester(userMapper.toEntity(dto.getRequestor()));
+        request.setId(dto.getId());
+        request.setCreated(dto.getCreated());
+        return request;
     }
 }
