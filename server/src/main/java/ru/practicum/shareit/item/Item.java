@@ -6,7 +6,6 @@ import lombok.Setter;
 import ru.practicum.shareit.itemRequest.ItemRequest;
 import ru.practicum.shareit.user.User;
 
-
 @Entity
 @Table(name = "items")
 @Getter
@@ -26,6 +25,7 @@ public class Item {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private ItemRequest request;
+
 
     public Item(Long id, String name, String description, boolean available, User owner) {
         this.id = id;

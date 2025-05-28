@@ -16,4 +16,8 @@ public class UserDto {
     @NotNull(message = "Email не может быть пустым")
     @Email(message = "Некорректный формат email")
     private String email;
+
+    public UserDto() {
+
+    }
 }

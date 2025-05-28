@@ -2,6 +2,7 @@ package ru.practicum.shareit.itemRequest;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import ru.practicum.shareit.exception.BadRequestException;
 import ru.practicum.shareit.exception.NotFoundException;
 import ru.practicum.shareit.itemRequest.dto.ItemRequestDto;
 import ru.practicum.shareit.user.User;
@@ -28,7 +29,14 @@ public class ItemRequestServiceImpl implements ItemRequestService {
 
     @Override
     public ItemRequestDto createRequest(ItemRequestDto requestDto) {
+        if (requestDto.getRequestor() == null || requestDto.getRequestor().getId() == null) {
+            throw new BadRequestException("Requestor must be provided");
+        }
+
         ItemRequest itemRequest = itemRequestMapper.toEntity(requestDto);
+        itemRequest.setRequester(userRepository.findById(requestDto.getRequestor().getId())
+                .orElseThrow(() -> new NotFoundException("User  not found")));
+
         itemRequest = itemRequestRepository.save(itemRequest);
         return itemRequestMapper.toRequestDto(itemRequest);
     }

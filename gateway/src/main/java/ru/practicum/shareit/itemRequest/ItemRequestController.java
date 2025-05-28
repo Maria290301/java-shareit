@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-
 @Controller
 @RequestMapping(path = "/requests")
 @RequiredArgsConstructor
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class ItemRequestController {
 
-    private final RequestClient requestClient;
+    private final ItemRequestClient requestClient;
 
     @PostMapping
     public ResponseEntity<Object> createRequest(@RequestHeader("X-User-Id") Long userId,

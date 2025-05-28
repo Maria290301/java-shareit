@@ -21,13 +21,13 @@ public class ItemController {
     private final ItemService itemService;
 
     @PostMapping
-    public ItemDto addItem(@RequestBody @Valid ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
+    public ItemDto addItem(@RequestBody ItemDto itemDto, @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Получен запрос POST /items");
         return itemService.addItem(itemDto, ownerId);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto patchItem(@RequestBody ItemDto itemDto, @PathVariable Long itemId,
+    public ItemDto patchItem(@RequestBody ItemDto itemDto, @PathVariable("itemId") Long itemId,
                              @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Получен запрос PATCH /items/{itemId}");
         return itemService.updateItem(itemDto, itemId, ownerId);
@@ -35,7 +35,7 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ItemDtoBookingsAndComments getItemById(@RequestHeader("X-Sharer-User-Id") Long ownerId,
-                                                  @PathVariable Long itemId) {
+                                                  @PathVariable("itemId") Long itemId) {
         log.info("Получен запрос GET /items/{itemId}");
         return itemService.getItemById(ownerId, itemId);
     }
@@ -53,7 +53,7 @@ public class ItemController {
     }
 
     @PostMapping("/{itemId}/comment")
-    public CommentDto addComment(@RequestBody @Valid CommentDto commentDto, @PathVariable Long itemId,
+    public CommentDto addComment(@RequestBody @Valid CommentDto commentDto, @PathVariable("itemId") Long itemId,
                                  @RequestHeader("X-Sharer-User-Id") Long authorId) {
         log.info("Получен запрос POST /items");
         return itemService.addComment(commentDto, itemId, authorId);

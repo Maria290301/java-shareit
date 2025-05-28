@@ -10,7 +10,6 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.shareit.client.BaseClient;
 import ru.practicum.shareit.user.dto.UserDto;
 
-
 @Slf4j
 @Service
 public class UserClient extends BaseClient {
@@ -29,7 +28,7 @@ public class UserClient extends BaseClient {
     }
 
     public ResponseEntity<Object> updateUser(UserDto userDto, Long userId) {
-        return put("/" + userId, userId, userDto);
+        return patch("/" + userId, userId, userDto);
     }
 
     public ResponseEntity<Object> deleteUser(Long userId) {

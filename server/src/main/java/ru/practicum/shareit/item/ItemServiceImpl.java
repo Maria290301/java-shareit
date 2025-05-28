@@ -38,10 +38,20 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemDto addItem(ItemDto itemDto, Long ownerId) {
+        // Проверка наличия пользователя
         User user = userRepository.findById(ownerId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id=" + ownerId + " не найден"));
+
+        // Если requestId не нужен для создания, просто игнорируем его
+        if (itemDto.getRequestId() == null) {
+            // Можно установить requestId в null или какое-то значение по умолчанию
+            itemDto.setRequestId(null); // Или просто пропустите это
+        }
+
+        // Создание предмета
         Item item = ItemMapper.toItem(itemDto, user);
-        return ItemMapper.toItemDto(itemRepository.save(item));
+        Item savedItem = itemRepository.save(item);
+        return ItemMapper.toItemDto(savedItem);
     }
 
     @Override

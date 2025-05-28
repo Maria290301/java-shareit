@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user;
 
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -24,13 +23,13 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public UserDto patchUser(@RequestBody UserDto userDto, @PathVariable Long userId) {
+    public UserDto patchUser(@RequestBody UserDto userDto, @PathVariable("userId") Long userId) {
         log.info("Получен запрос PATCH /users/{}", userId);
         return userService.updateUser(userDto, userId);
     }
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) {
+    public void deleteUser(@PathVariable("userId") Long userId) {
         log.info("Получен запрос DELETE /users/{}", userId);
         userService.deleteUser(userId);
     }
@@ -42,7 +41,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable Long userId) {
+    public UserDto getUserById(@PathVariable("userId") Long userId) {
         log.info("Получен запрос GET /users/{}", userId);
         return userService.getUserById(userId);
     }
