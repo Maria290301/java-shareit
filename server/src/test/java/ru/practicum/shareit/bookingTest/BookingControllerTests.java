@@ -146,7 +146,6 @@ public class BookingControllerTests {
         assertThrows(ItemIsNotAvailableException.class, () -> bookingController.addBooking(bookingDto, booker.getId()));
     }
 
-
     @Test
     void addBookingByOwnerTest() {
         UserDto owner = userController.addUser(userDto);

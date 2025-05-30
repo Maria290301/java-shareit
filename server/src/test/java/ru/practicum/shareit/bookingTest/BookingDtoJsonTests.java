@@ -21,21 +21,19 @@ public class BookingDtoJsonTests {
     void testBookingDto() throws Exception {
         BookingDto bookingDto = BookingDto.builder()
                 .id(1L)
-                .start(LocalDateTime.of(2023, 10, 24, 12, 30, 0)) // Секунды равны 0
-                .end(LocalDateTime.of(2023, 11, 10, 13, 0, 0)) // Секунды равны 0
+                .start(LocalDateTime.of(2023, 10, 24, 12, 30, 0))
+                .end(LocalDateTime.of(2023, 11, 10, 13, 0, 0))
                 .itemId(1L)
                 .build();
 
         JsonContent<BookingDto> result = json.write(bookingDto);
 
-        // Форматируем даты с секундами
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         String expectedStart = bookingDto.getStart().format(formatter);
         String expectedEnd = bookingDto.getEnd().format(formatter);
 
-        // Проверяем значения с помощью AssertJ
         assertThat(result).extractingJsonPathNumberValue("$.id").isEqualTo(1);
-        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo(expectedStart); // Ожидаем с секундами
-        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo(expectedEnd); // Ожидаем с секундами
+        assertThat(result).extractingJsonPathStringValue("$.start").isEqualTo(expectedStart);
+        assertThat(result).extractingJsonPathStringValue("$.end").isEqualTo(expectedEnd);
     }
 }

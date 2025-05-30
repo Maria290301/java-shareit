@@ -60,4 +60,43 @@ public class UserControllerTests {
     void getByWrongIdTest() {
         assertThrows(NotFoundException.class, () -> userController.getUserById(1L));
     }
+
+    @Test
+    void updateUserPartialNameTest() {
+        UserDto createdUser  = userController.addUser (user);
+        UserDto updatedUserDto = UserDto.builder().name("new name").build(); // Обновляем только имя
+        userController.patchUser (updatedUserDto, createdUser .getId());
+
+        UserDto fetchedUser  = userController.getUserById(createdUser .getId());
+        assertEquals("new name", fetchedUser .getName());
+        assertEquals(user.getEmail(), fetchedUser .getEmail()); // Email должен остаться прежним
+    }
+
+    @Test
+    void updateUserPartialEmailTest() {
+        UserDto createdUser  = userController.addUser (user);
+        UserDto updatedUserDto = UserDto.builder().email("new@email.com").build(); // Обновляем только email
+        userController.patchUser (updatedUserDto, createdUser .getId());
+
+        UserDto fetchedUser  = userController.getUserById(createdUser .getId());
+        assertEquals("new@email.com", fetchedUser .getEmail());
+        assertEquals(user.getName(), fetchedUser .getName()); // Имя должно остаться прежним
+    }
+    @Test
+    void deleteExistingUserTest() {
+        UserDto userDto = userController.addUser (user);
+        assertEquals(1, userController.getAllUsers().size()); // Убедитесь, что пользователь добавлен
+
+        userController.deleteUser (userDto.getId()); // Удаляем пользователя
+
+        assertEquals(0, userController.getAllUsers().size()); // Убедитесь, что пользователь удален
+    }
+    @Test
+    void deleteNonExistentUserTest() {
+        assertThrows(NotFoundException.class, () -> userController.deleteUser (999L)); // Используйте ID, который не существует
+    }
+    @Test
+    void getNonExistentUserByIdTest() {
+        assertThrows(NotFoundException.class, () -> userController.getUserById(999L)); // Используйте ID, который не существует
+    }
 }

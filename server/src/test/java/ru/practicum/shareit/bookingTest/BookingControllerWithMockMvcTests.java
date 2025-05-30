@@ -59,72 +59,58 @@ public class BookingControllerWithMockMvcTests {
 
     @Test
     void addBookingTest() throws Exception {
-        // Создаем объект BookingDto, который вы хотите замокировать
         BookingDto bookingDto = new BookingDto();
-        bookingDto.setItemId(1L); // Установите необходимые поля
+        bookingDto.setItemId(1L);
 
-        // Создаем объект ResponseBookingDto, который будет возвращаться
         ResponseBookingDto responseBookingDto = new ResponseBookingDto();
-        responseBookingDto.setId(1L); // Установите необходимые поля
-        // Установите другие поля, если нужно
+        responseBookingDto.setId(1L);
 
-        // Мокаем поведение сервиса
         when(bookingService.addBooking(any(BookingDto.class), anyLong())).thenReturn(responseBookingDto);
 
-        // Выполняем запрос
         mvc.perform(post("/bookings")
                         .content(mapper.writeValueAsString(bookingDto))
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("X-Sharer-User-Id", 1L)) // Убедитесь, что заголовок правильный
+                        .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(responseBookingDto))); // Используем responseBookingDto
+                .andExpect(content().json(mapper.writeValueAsString(responseBookingDto)));
     }
 
     @Test
     void getBookingByIdTest() throws Exception {
-        // Создаем объект ResponseBookingDto для возвращаемого значения
         ResponseBookingDto responseBookingDto = new ResponseBookingDto();
-        responseBookingDto.setId(1L); // Установите необходимые поля
+        responseBookingDto.setId(1L);
 
-        // Мокаем поведение сервиса
         when(bookingService.getBookingById(anyLong(), anyLong())).thenReturn(responseBookingDto);
 
-        // Выполняем запрос
         mvc.perform(get("/bookings/1")
                         .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(responseBookingDto))); // Используем responseBookingDto
+                .andExpect(content().json(mapper.writeValueAsString(responseBookingDto)));
     }
 
     @Test
     void approveBookingTest() throws Exception {
-        // Создаем объект ResponseBookingDto для возвращаемого значения
         ResponseBookingDto responseBookingDto = new ResponseBookingDto();
-        responseBookingDto.setId(1L); // Установите необходимые поля
+        responseBookingDto.setId(1L);
 
-        // Мокаем поведение сервиса
         when(bookingService.patchBooking(anyLong(), anyLong(), anyBoolean())).thenReturn(responseBookingDto);
 
-        // Выполняем запрос
         mvc.perform(patch("/bookings/1?approved=true")
                         .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(responseBookingDto))); // Используем responseBookingDto
+                .andExpect(content().json(mapper.writeValueAsString(responseBookingDto)));
     }
 
     @Test
     void getAllUsersBookingsTest() throws Exception {
-        // Создаем список объектов ResponseBookingDto для возвращаемого значения
         ResponseBookingDto responseBookingDto = new ResponseBookingDto();
-        responseBookingDto.setId(1L); // Установите необходимые поля
+        responseBookingDto.setId(1L);
 
-        // Мокаем поведение сервиса
         when(bookingService.getAllUsersBookings(anyLong(), any())).thenReturn(List.of(responseBookingDto));
 
-        // Выполняем запрос
         mvc.perform(get("/bookings")
                         .header("X-Sharer-User-Id", 1L))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(List.of(responseBookingDto)))); // Используем список responseBookingDto
+                .andExpect(content().json(mapper.writeValueAsString(List.of(responseBookingDto))));
     }
 }
