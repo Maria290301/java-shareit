@@ -126,7 +126,7 @@ public class ItemRequestServiceImplTests {
         when(userService.getUserById(anyLong())).thenThrow(new NotFoundException("User  not found"));
 
         assertThrows(NotFoundException.class, () -> {
-            itemRequestService.getAllByUser (999L);
+            itemRequestService.getAllByUser(999L);
         });
     }
 

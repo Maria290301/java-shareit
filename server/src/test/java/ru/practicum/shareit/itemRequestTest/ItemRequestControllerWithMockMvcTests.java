@@ -154,6 +154,7 @@ public class ItemRequestControllerWithMockMvcTests {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.error").value("User not found"));
     }
+
     @Test
     void getAllTest() throws Exception {
         List<ItemRequestDto> requests = List.of(itemRequestDto);
@@ -167,6 +168,7 @@ public class ItemRequestControllerWithMockMvcTests {
                 .andExpect(status().isOk())
                 .andExpect(content().json(mapper.writeValueAsString(requests)));
     }
+
     @Test
     void getAllWithInvalidPaginationTest() throws Exception {
         mvc.perform(get("/requests/all")
