@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Data
+@Builder
 public class ItemDto {
 
     private Long id;

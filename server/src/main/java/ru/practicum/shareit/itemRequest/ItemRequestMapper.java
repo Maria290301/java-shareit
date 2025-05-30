@@ -1,37 +1,27 @@
 package ru.practicum.shareit.itemRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.experimental.UtilityClass;
 import ru.practicum.shareit.itemRequest.dto.ItemRequestDto;
 
-import ru.practicum.shareit.user.UserMapper;
+import java.util.ArrayList;
 
-
-@Component
+@UtilityClass
 public class ItemRequestMapper {
-
-    private final UserMapper userMapper;
-
-    @Autowired
-    public ItemRequestMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
+    public static ItemRequest fromItemRequestDto(ItemRequestDto itemRequestDto) {
+        return ItemRequest
+                .builder()
+                .id(itemRequestDto.getId())
+                .description(itemRequestDto.getDescription())
+                .build();
     }
 
-    public ItemRequestDto toRequestDto(ItemRequest request) {
-        ItemRequestDto dto = new ItemRequestDto();
-        dto.setId(request.getId());
-        dto.setDescription(request.getDescription());
-        dto.setRequestor(userMapper.toUserDto(request.getRequester()));
-        dto.setCreated(request.getCreated());
-        return dto;
-    }
-
-    public ItemRequest toEntity(ItemRequestDto dto) {
-        ItemRequest request = new ItemRequest();
-        request.setDescription(dto.getDescription());
-        request.setRequester(userMapper.toEntity(dto.getRequestor()));
-        request.setId(dto.getId());
-        request.setCreated(dto.getCreated());
-        return request;
+    public static ItemRequestDto toItemRequestDto(ItemRequest itemRequest) {
+        return ItemRequestDto
+                .builder()
+                .id(itemRequest.getId())
+                .description(itemRequest.getDescription())
+                .created(itemRequest.getCreated())
+                .items(new ArrayList<>())
+                .build();
     }
 }

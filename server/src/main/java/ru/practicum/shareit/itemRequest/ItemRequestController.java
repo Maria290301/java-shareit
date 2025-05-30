@@ -1,61 +1,46 @@
 package ru.practicum.shareit.itemRequest;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.itemRequest.dto.ItemRequestDto;
 
-import java.util.*;
+import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/requests")
 @Validated
+@RequestMapping(path = "/requests")
 public class ItemRequestController {
     private final ItemRequestService itemRequestService;
 
+    private static final String HEADER_USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public ItemRequestDto createRequest(@RequestBody ItemRequestDto itemRequestDto,
-                                        @RequestHeader("X-User-Id") Long userId) {
-        log.info("Получен запрос на создание запроса на предмет от пользователя {}", userId);
-        return itemRequestService.createRequest(itemRequestDto);
+    public ItemRequestDto create(
+            @RequestHeader(HEADER_USER_ID) Long userId,
+            @RequestBody ItemRequestDto itemRequestDto) {
+        return itemRequestService.create(userId, itemRequestDto);
+    }
+
+    @GetMapping
+    public List<ItemRequestDto> getAllByUser(
+            @RequestHeader(HEADER_USER_ID) Long userId) {
+        return itemRequestService.getAllByUser(userId);
+    }
+
+    @GetMapping("/all")
+    public List<ItemRequestDto> getAll(
+            @RequestParam(defaultValue = "0") int from,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestHeader(HEADER_USER_ID) Long userId) {
+        return itemRequestService.getAll(from, size, userId);
     }
 
     @GetMapping("/{requestId}")
-    public ItemRequestDto getRequestById(@PathVariable("requestId") Long requestId) {
-        log.info("Получен запрос на получение запроса на предмет с ID {}", requestId);
-        return itemRequestService.getRequestById(requestId);
-    }
-
-    @GetMapping("/user/{userId}")
-    public List<ItemRequestDto> getUserRequests(@PathVariable("userId") Long userId) {
-        log.info("Получен запрос на получение запросов пользователя {}", userId);
-        return itemRequestService.getRequestsByUserId(userId);
-    }
-
-    @GetMapping("/search")
-    public List<ItemRequestDto> searchRequests(@RequestParam("text") String text) {
-        log.info("Получен запрос на поиск запросов на предметы с текстом '{}'", text);
-        return itemRequestService.searchRequests(text);
-    }
-
-    @PatchMapping("/{requestId}")
-    public ItemRequestDto updateRequest(@PathVariable("requestId") Long requestId,
-                                        @Valid @RequestBody ItemRequestDto updatedRequest) {
-        log.info("Получен запрос на обновление запроса на предмет с ID {} ", requestId);
-        return itemRequestService.updateRequest(requestId, updatedRequest);
-    }
-
-    @DeleteMapping("/{requestId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteRequest(@PathVariable("requestId") Long requestId) {
-        log.info("Получен запрос на удаление запроса на предмет с ID {}", requestId);
-        itemRequestService.deleteRequest(requestId);
+    public ItemRequestDto getById(
+            @PathVariable Long requestId,
+            @RequestHeader(HEADER_USER_ID) Long userId) {
+        return itemRequestService.getById(requestId, userId);
     }
 }

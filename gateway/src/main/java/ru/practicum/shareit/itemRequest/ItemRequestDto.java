@@ -1,19 +1,14 @@
 package ru.practicum.shareit.itemRequest;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ru.practicum.shareit.item.dto.ItemResponseDto;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-@Data
-@AllArgsConstructor
+@Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ItemRequestDto {
-    private Long id;
+    @NotBlank
     private String description;
-    private LocalDateTime created;
-    private List<ItemResponseDto> items;
 }

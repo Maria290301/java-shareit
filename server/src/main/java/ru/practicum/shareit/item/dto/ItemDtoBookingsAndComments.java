@@ -8,7 +8,6 @@ import lombok.Setter;
 import ru.practicum.shareit.comment.dto.CommentDto;
 import ru.practicum.shareit.booking.dto.ShortBookingDto;
 
-
 import java.util.List;
 
 @Getter

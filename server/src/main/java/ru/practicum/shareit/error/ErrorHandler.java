@@ -12,7 +12,6 @@ import ru.practicum.shareit.exception.DuplicateEmailException;
 import ru.practicum.shareit.exception.IncorrectUserException;
 import ru.practicum.shareit.exception.NotFoundException;
 
-
 @RestControllerAdvice
 @Slf4j
 public class ErrorHandler {
@@ -20,7 +19,6 @@ public class ErrorHandler {
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleMethodArgumentTypeMismatchException(final MethodArgumentTypeMismatchException e) {
-        // Получаем название типа аргумента, который вызвал ошибку
         String name = e.getName();
         String message = "Invalid argument for parameter: " + name;
 
@@ -41,7 +39,6 @@ public class ErrorHandler {
         log.error(e.getMessage(), e);
         return new ErrorResponse(e.getMessage());
     }
-
 
     @ExceptionHandler(IncorrectUserException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)

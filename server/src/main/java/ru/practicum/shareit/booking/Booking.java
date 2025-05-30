@@ -17,6 +17,7 @@ import ru.practicum.shareit.user.User;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

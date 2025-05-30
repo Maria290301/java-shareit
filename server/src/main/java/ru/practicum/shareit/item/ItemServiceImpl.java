@@ -15,6 +15,8 @@ import ru.practicum.shareit.exception.ValidationException;
 import ru.practicum.shareit.comment.CommentMapper;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.comment.Comment;
+import ru.practicum.shareit.itemRequest.ItemRequest;
+import ru.practicum.shareit.itemRequest.ItemRequestRepository;
 import ru.practicum.shareit.user.User;
 import ru.practicum.shareit.booking.BookingRepository;
 import ru.practicum.shareit.comment.CommentRepository;
@@ -31,6 +33,7 @@ import java.util.stream.Collectors;
 public class ItemServiceImpl implements ItemService {
 
     private final ItemRepository itemRepository;
+    private final ItemRequestRepository itemRequestRepository;
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final CommentRepository commentRepository;
@@ -38,18 +41,17 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public ItemDto addItem(ItemDto itemDto, Long ownerId) {
-        // Проверка наличия пользователя
         User user = userRepository.findById(ownerId)
                 .orElseThrow(() -> new NotFoundException("Пользователь с id=" + ownerId + " не найден"));
 
-        // Если requestId не нужен для создания, просто игнорируем его
-        if (itemDto.getRequestId() == null) {
-            // Можно установить requestId в null или какое-то значение по умолчанию
-            itemDto.setRequestId(null); // Или просто пропустите это
+        Item item = ItemMapper.toItem(itemDto, user);
+
+        if (itemDto.getRequestId() != null) {
+            ItemRequest request = itemRequestRepository.findById(itemDto.getRequestId())
+                    .orElseThrow(() -> new NotFoundException("ItemRequest с id=" + itemDto.getRequestId() + " не найден"));
+            item.setRequest(request);
         }
 
-        // Создание предмета
-        Item item = ItemMapper.toItem(itemDto, user);
         Item savedItem = itemRepository.save(item);
         return ItemMapper.toItemDto(savedItem);
     }
